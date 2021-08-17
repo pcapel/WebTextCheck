@@ -25,12 +25,13 @@ export function emptyTextContent(node) {
 /**
  * Factory for a node action which is performed when predicate returns true.
  */
-export const test = (predicate, action) => (node) => {
-  if (predicate(node)) {
-    action(node);
-  }
-};
-
+export function test(predicate, action) {
+  return function (node) {
+    if (predicate(node)) {
+      action(node);
+    }
+  };
+}
 /**
  * Decorator for negating the output of a boolean function
  */
@@ -73,16 +74,20 @@ function onlyWhitespace(str) {
 /**
  * Curried function for adding a classname to a node's parentNode
  */
-export const addClass = (className) => (node) => {
-  return node.parentNode.classList.add(className);
-};
+export function addClass(className) {
+  return function (node) {
+    return node.parentNode.classList.add(className);
+  };
+}
 
 /**
  * Curried function for removing a classname to a node's parentNode
  */
-export const removeClass = (className) => (node) => {
-  return node.parentNode.classList.remove(className);
-};
+export function removeClass(className) {
+  return function (node) {
+    return node.parentNode.classList.remove(className);
+  };
+}
 
 /**
  * Traverse the DOM and collect all the nodes that match criterion objects in
@@ -129,6 +134,7 @@ export function safeWrap(criterion) {
 
 /**
  * Use with Array.filter and other things to get only truthy values
+ * just an alias for id
  */
 export const truthy = id;
 

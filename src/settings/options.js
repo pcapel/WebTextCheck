@@ -1,60 +1,65 @@
 function log() {
   console.log(...arguments);
 }
+function domNode(id) {
+  return document.getElementById(id);
+}
 
+// Ostensibly this is helping simplify the addition of new fields
+// by declaring the data that should flow into and out of the storage api
 const INPUTS = [
   {
-    id: 'good-class',
-    storageItemsTransform: (id) => {
-      const domNode = document.getElementById(id);
+    getStorageItems: () => {
+      const id = 'good-class';
+      const node = domNode(id);
 
       return [
-        storageItem('goodClassContent', domNode.value, '', id),
-        storageItem('goodClassName', classNameFor(domNode), '', id),
+        storageItem('goodClassContent', node.value, '', id),
+        storageItem('goodClassName', classNameFor(node), '', id),
       ];
     },
   },
   {
-    id: 'bad-class',
-    storageItemsTransform: (id) => {
-      const domNode = document.getElementById(id);
+    getStorageItems: () => {
+      const id = 'bad-class';
+      const node = domNode(id);
 
       return [
-        storageItem('badClassContent', domNode.value, '', id),
-        storageItem('badClassName', classNameFor(domNode), '', id),
+        storageItem('badClassContent', node.value, '', id),
+        storageItem('badClassName', classNameFor(node), '', id),
       ];
     },
   },
   {
-    id: 'extra-class',
-    storageItemsTransform: (id) => {
-      const domNode = document.getElementById(id);
+    getStorageItems: () => {
+      const id = 'extra-class';
+      const node = domNode(id);
 
-      return [storageItem('extraClassContent', domNode.value, '', id)];
+      return [storageItem('extraClassContent', node.value, '', id)];
     },
   },
   {
-    id: 'show-debug-log',
-    storageItemsTransform: (id) => {
-      const domNode = document.getElementById(id);
+    getStorageItems: () => {
+      const id = 'show-debug-log';
+      const node = domNode(id);
 
-      return [storageItem('showDebugLog', domNode.checked, false, id)];
+      return [storageItem('showDebugLog', node.checked, false, id)];
     },
   },
   {
-    id: 'url-hostname',
-    storageItemsTransform: (id) => {
-      const domNode = document.getElementById(id);
+    getStorageItems: () => {
+      const id = 'url-hostname';
+      const node = domNode(id);
 
-      return [storageItem('urlHostname', domNode.value, 'localhost', id)];
+      return [storageItem('urlHostname', node.value, 'localhost', id)];
     },
   },
   {
-    id: 'good-test-pattern',
-    storageItemsTransform: (id) => {
-      const domNode = document.getElementById(id);
+    getStorageItems: () => {
+      const id = 'good-test-pattern';
+      const node = domNode(id);
 
-      return [storageItem('testPattern', domNode.value, 'QA: ', id)];
+      return [storageItem('testPattern', node.value, 'QA: ', id)];
     },
   },
 ];
@@ -64,7 +69,7 @@ function storageItem(storageName, value, defaultValue, domId) {
 }
 
 function transform(inputObject) {
-  return inputObject.storageItemsTransform(inputObject.id);
+  return inputObject.getStorageItems();
 }
 
 const RE = /[^a-z0-9-]/gi;
