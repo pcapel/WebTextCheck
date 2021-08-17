@@ -11,6 +11,10 @@ import {
   getStyleSheet,
 } from './helpers';
 
+function log() {
+  console.debug(...arguments);
+}
+
 // BEGIN primary business logic
 const CLASS_KEYS = ['badClassName', 'goodClassName'];
 const STORAGE_KEYS = [
@@ -20,6 +24,7 @@ const STORAGE_KEYS = [
   'goodClassContent',
   'badClassContent',
   'extraClassContent',
+  'showDebugLog',
 ];
 
 const STYLE_TITLE = 'TextHelpStyles';
@@ -90,15 +95,22 @@ function initialize(storageState) {
     Cache[key] = storageState[key];
   });
 
+  log('Cache initialized:', Cache);
+
+  log('Hostname Match? ', Cache.urlHostname !== window.location.hostname);
   // TODO: lift this into something a little better
   if (Cache.urlHostname !== window.location.hostname) return;
 
+  log('updating classes');
   allNodesDo(test(matchesCachePattern, addClass(Cache.goodClassName)));
   allNodesDo(test(not(matchesCachePattern), addClass(Cache.badClassName)));
+  log('classes updated');
 
+  log('inserting rules');
   Cache.styleSheet.sheet.insertRule(storageState.extraClassContent, 0);
   Cache.styleSheet.sheet.insertRule(storageState.goodClassContent, 1);
   Cache.styleSheet.sheet.insertRule(storageState.badClassContent, 2);
+  log('rules inserted');
 }
 
 function updateCache(changes) {
@@ -133,6 +145,8 @@ function updateStyleSheet(changes) {
 // END primary business logic
 
 // BEGIN main program loop
+log('starting main program loop');
+console.log('what');
 browser.storage.sync.get(STORAGE_KEYS).then(initialize).catch(console.error);
 // TODO: doAll will need a way to cancel out, or something. Maybe with a predicate?
 browser.storage.onChanged.addListener(
