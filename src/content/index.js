@@ -55,6 +55,9 @@ const criteria = [
   { name: 'Not empty', fn: not(emptyTextContent) },
 ].map(safeWrap);
 
+// collect the nodes on the initial script injection.
+// I need to make sure that this makes the most sense with the way dynamic
+// content can work
 const textNodes = collectNodes(document, criteria);
 
 function allNodesDo(fn) {
