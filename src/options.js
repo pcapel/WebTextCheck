@@ -72,7 +72,7 @@ const setCurrentChoice = (key) => (result) => {
       TestPatternInput().value = result.testPattern || 'QA: ';
       break;
     case STORAGE.urlHostname:
-      HostnameInput().value = result.urlHostname || '';
+      HostnameInput().value = result.urlHostname || 'localhost';
       break;
     case STORAGE.styleContent:
       break;
