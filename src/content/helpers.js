@@ -1,3 +1,27 @@
+export function log() {
+  console.debug(...arguments);
+}
+
+export function isText(node) {
+  return node.nodeType === 3;
+}
+
+export function parentAttrIs(attrName, value) {
+  return function (node) {
+    return parent(node).getAttribute(attrName) === value;
+  };
+}
+
+export function parentIsA(nodeName) {
+  return function (node) {
+    return parent(node).localeName === nodeName;
+  };
+}
+
+export function emptyTextContent(node) {
+  return onlyWhitespace(node.textContent);
+}
+
 /**
  * Factory for a node action which is performed when predicate returns true.
  */
@@ -42,7 +66,7 @@ export function getStyleSheet(title) {
  * Test to see if a string is only whitespace
  * TODO: Does it? I hate regex....
  */
-export function onlyWhitespace(str) {
+function onlyWhitespace(str) {
   return !/\S/.test(str);
 }
 
@@ -94,7 +118,7 @@ export function safeWrap(criterion) {
     let result;
 
     try {
-      result = criterion.call(node);
+      result = criterion.fn(node);
     } catch (e) {
       console.error(`${criterion.name} threw: ${e}`);
       return criterion.throwReturn || true;
@@ -126,4 +150,8 @@ function meets(node, criteria) {
 
 function hasChildren(node) {
   return node.childNodes[0] !== undefined;
+}
+
+function parent(node) {
+  return node.parentNode;
 }

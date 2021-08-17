@@ -1,19 +1,18 @@
 import {
-  not,
-  test,
-  safeWrap,
-  doAll,
-  collectNodes,
-  onlyWhitespace,
   addClass,
-  removeClass,
-  truthy,
+  collectNodes,
+  doAll,
+  emptyTextContent,
   getStyleSheet,
+  log,
+  not,
+  parentAttrIs,
+  parentIsA,
+  removeClass,
+  safeWrap,
+  test,
+  truthy,
 } from './helpers';
-
-function log() {
-  console.debug(...arguments);
-}
 
 // BEGIN primary business logic
 const CLASS_KEYS = ['badClassName', 'goodClassName'];
@@ -34,8 +33,9 @@ StyleSheet.title = STYLE_TITLE;
 document.body.appendChild(StyleSheet);
 
 // initialize the cache with null values
-// Cache is just in case I can't always get keys in the update methods, but I
-// don't know if that's a valid concern
+// Cache is just in case I can't always
+// get keys in the update methods.
+// I don't know if that's a valid concern
 const Cache = STORAGE_KEYS.reduce(
   (acc, key) => {
     acc[key] = null;
@@ -46,29 +46,13 @@ const Cache = STORAGE_KEYS.reduce(
   }
 );
 
-// Can define `throwReturn` to alter the value returned if the check throws an
-// error
+// `throwReturn` alters the value returned if the check throws an error
 const criteria = [
-  {
-    name: 'Is Text Node',
-    call: (node) => node.nodeType === 3,
-  },
-  {
-    name: 'Is Not Aria Hidden',
-    call: (node) => node.parentNode.getAttribute('aria-hidden') !== 'true',
-  },
-  {
-    name: 'Is not a script',
-    call: (node) => node.parentNode.localName !== 'script',
-  },
-  {
-    name: 'Is not a style',
-    call: (node) => node.parentNode.localName !== 'style',
-  },
-  {
-    name: 'Is not whitespace only',
-    call: (node) => !onlyWhitespace(node.textContent),
-  },
+  { name: 'Text Node', fn: isText },
+  { name: 'Not aria-hidden', fn: not(parentAttrIs('aria-hidden', 'true')) },
+  { name: 'Not <script>', fn: not(parentIsA('script')) },
+  { name: 'Not <style>', fn: not(parentIsA('style')) },
+  { name: 'Not empty', fn: not(emptyTextContent) },
 ].map(safeWrap);
 
 const textNodes = collectNodes(document, criteria);
