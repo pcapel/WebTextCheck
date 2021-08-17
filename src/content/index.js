@@ -1,5 +1,8 @@
 import {
+  not,
+  test,
   safeWrap,
+  doAll,
   collectNodes,
   onlyWhitespace,
   addClass,
@@ -8,6 +11,7 @@ import {
   getStyleSheet,
 } from './helpers';
 
+// BEGIN primary business logic
 const CLASS_KEYS = ['badClassName', 'goodClassName'];
 const STORAGE_KEYS = [
   ...CLASS_KEYS,
@@ -25,6 +29,8 @@ StyleSheet.title = STYLE_TITLE;
 document.body.appendChild(StyleSheet);
 
 // initialize the cache with null values
+// Cache is just in case I can't always get keys in the update methods, but I
+// don't know if that's a valid concern
 const Cache = STORAGE_KEYS.reduce(
   (acc, key) => {
     acc[key] = null;
@@ -68,12 +74,6 @@ function allNodesDo(fn) {
   });
 }
 
-const test = (predicate, action) => (node) => {
-  if (predicate(node)) {
-    action(node);
-  }
-};
-
 function matchesCachePattern(node) {
   let regex;
   try {
@@ -83,12 +83,6 @@ function matchesCachePattern(node) {
     return false;
   }
   return regex.test(node.textContent);
-}
-
-function not(fn) {
-  return function () {
-    return !fn(...arguments);
-  };
 }
 
 function initialize(storageState) {
@@ -105,14 +99,6 @@ function initialize(storageState) {
   Cache.styleSheet.sheet.insertRule(storageState.extraClassContent, 0);
   Cache.styleSheet.sheet.insertRule(storageState.goodClassContent, 1);
   Cache.styleSheet.sheet.insertRule(storageState.badClassContent, 2);
-}
-
-browser.storage.sync.get(STORAGE_KEYS).then(initialize).catch(console.error);
-
-function doAll(fns, predicate = () => true) {
-  return function () {
-    if (predicate(...arguments)) fns.forEach((fn) => fn(...arguments));
-  };
 }
 
 function updateCache(changes) {
@@ -144,8 +130,12 @@ function updateStyleSheet(changes) {
   Cache.styleSheet.sheet.insertRule(changes.goodClassContent.newValue, 1);
   Cache.styleSheet.sheet.insertRule(changes.badClassContent.newValue, 2);
 }
+// END primary business logic
 
+// BEGIN main program loop
+browser.storage.sync.get(STORAGE_KEYS).then(initialize).catch(console.error);
 // TODO: doAll will need a way to cancel out, or something. Maybe with a predicate?
 browser.storage.onChanged.addListener(
   doAll([updateCache, updateStyleSheet, updateClasses])
 );
+// END main program loop
