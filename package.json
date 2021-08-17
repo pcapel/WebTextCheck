@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "test": "jest",
+    "build": "webpack",
+    "watch": "webpack --watch --mode=production"
+  },
+  "name": "note-share",
+  "version": "1.0.0",
+  "description": "Firefox web site annotation and note sharing",
+  "repository": "git@github.com:pcapel/note-share.git",
+  "author": "Philip Capel <insert.available.name@gmail.com>",
+  "license": "GPLv3",
+  "private": true,
+  "dependencies": {
+    "@types/uuid": "^8.3.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "prettier": "^2.2.1",
+    "webpack": "^5.12.1",
+    "webpack-cli": "^4.3.1"
+  }
+}

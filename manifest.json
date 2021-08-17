@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "Text Help",
+  "version": "1.0.0",
+  "description": "Help find text on a page using DOM magic",
+  "options_ui": {
+    "page": "options.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/index.js"]
+    }
+  ],
+  "browser_action": {
+    "default_title": "TextHelp"
+  },
+  "permissions": ["notifications", "storage"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "text_help@example.com"
+    }
+  }
+}

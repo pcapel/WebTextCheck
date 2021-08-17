@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <form>
+            <label for="good-test-pattern">URL Hostname:</label>
+            <br/>
+            <input type="text" id="url-hostname" >
+            <label for="good-test-pattern">Pattern for Good Text:</label>
+            <br/>
+            <input type="text" id="good-test-pattern" >
+            <p>Test pattern should match text that is "good", meaning all other
+            text is "bad". This will be tested as case-insensitive, so don't
+            worry about capitalization.</p>
+            <br/>
+            <p>Only add a single rule to this. Make sure that the class is
+            formatted with a newline after the closing bracket.</p>
+            <br/>
+            <label for="bad-class">Class for Bad Text:</label>
+            <br/>
+            <textarea id="bad-class" style="width: 600px; height: 175px;"></textarea>
+            <br/>
+            <label for="good-class">Class for Good Text:</label>
+            <br/>
+            <textarea id="good-class" style="width: 600px; height: 175px;"></textarea>
+            <br/>
+            <label for="extra-class">Class for Extra Behavior (e.g. animations):</label>
+            <br/>
+            <textarea id="extra-class" style="width: 600px; height: 175px;"></textarea>
+            <br/>
+            <button type="submit">Save</button>
+        </form>
+
+        <script src="./src/options.js"></script>
+    </body>
+</html>
+
