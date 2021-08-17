@@ -114,7 +114,9 @@ function all(collection, predicate) {
   });
 }
 
-const id = (value) => value;
+function id(value) {
+  return value;
+}
 
 function meets(node, criteria) {
   const results = criteria.map((predicate) => predicate(node));

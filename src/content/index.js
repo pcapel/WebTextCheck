@@ -146,7 +146,6 @@ function updateStyleSheet(changes) {
 
 // BEGIN main program loop
 log('starting main program loop');
-console.log('what');
 browser.storage.sync.get(STORAGE_KEYS).then(initialize).catch(console.error);
 // TODO: doAll will need a way to cancel out, or something. Maybe with a predicate?
 browser.storage.onChanged.addListener(
