@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Help find text on a page using DOM magic",
   "options_ui": {
-    "page": "options.html"
+    "page": "src/settings/options.html"
   },
   "content_scripts": [
     {
