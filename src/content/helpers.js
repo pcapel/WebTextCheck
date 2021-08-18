@@ -54,10 +54,10 @@ export function doAll(fns, predicate = () => true) {
 /**
  * Find a stylesheet with a given title
  */
-export function getStyleSheet(title) {
+export function getStyleSheet(id) {
   for (var i = 0; i < document.styleSheets.length; i++) {
     var sheet = document.styleSheets[i];
-    if (sheet.title == title) {
+    if (sheet.id == id) {
       return sheet;
     }
   }
